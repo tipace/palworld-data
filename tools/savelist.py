@@ -6,6 +6,7 @@ https://www.gamersky.com/tools/palworldwiki/#/
 import requests
 import json
 import sqlite3
+from saveimg import saveImg
 
 resList = []
 
@@ -51,11 +52,13 @@ def saveData(data):
     base = data['base']
     workInfo = data['workInfo']
 
+    imgName = base['imageUrl'].split('/')[-1]
     cursor.execute('''INSERT INTO pet
             (petNo, name, attribute, description, dropItem, food, imageUrl, workInfo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-    (base['petNo'], base['name'],  base['attribute'], base['description'], base['dropItem'], base['food'], base['imageUrl'], workInfo['workInfo']))
+    (base['petNo'], base['name'],  base['attribute'], base['description'], base['dropItem'], base['food'], imgName, workInfo['workInfo']))
 
+    saveImg(base['imageUrl'], imgName)
 
     # 详情信息
     params = {
